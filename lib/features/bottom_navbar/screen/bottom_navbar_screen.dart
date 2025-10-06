@@ -5,6 +5,7 @@ import 'package:jsulima/features/bottom_navbar/controller/bottom_navbar_controll
 
 import 'package:jsulima/features/games/screen/games_screen.dart';
 import 'package:jsulima/features/home/screen/home_screen.dart';
+import 'package:jsulima/features/profile/screen/guest_profile_placeholder.dart';
 
 import 'package:jsulima/features/profile/screen/profile_screen.dart';
 
@@ -15,15 +16,6 @@ class BottomNavbarScreen extends StatelessWidget {
   BottomNavbarScreen({super.key});
 
   final BottomNavbarController controller = Get.put(BottomNavbarController());
-
-  final List<Widget> screens = [
-    HomeScreen(),
-    GamesScreen(),
-
-    NotificationScreen(),
-    ProfileScreen(),
-
-  ];
 
   final List<String> activeIcons = [
     ImagePath.activeHome,
@@ -43,7 +35,17 @@ class BottomNavbarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF0D0D0F),
-      body: Obx(() => screens[controller.selectedIndex.value]),
+      body: Obx((){
+        final screens = [
+           HomeScreen(),
+           GamesScreen(),
+           NotificationScreen(),
+          controller.token.value != null
+              ?  ProfileScreen()
+              : GuestProfilePlaceholder(), 
+        ];
+        return screens[controller.selectedIndex.value];
+      }),
       bottomNavigationBar: Obx(
         () => BottomAppBar(
           color: Color(0xFF0D0D0F),
