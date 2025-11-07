@@ -61,9 +61,15 @@ class VerifyOtpScreen extends StatelessWidget {
 
         Get.offAll(() => UploadImageScreen());
       } else {
-        EasyLoading.showError(body['message'] ?? "OTP Verification Failed");
+        final errorMessage =
+            body['message'] is List
+                ? (body['message'] as List).join(", ")
+                : body['message']?.toString() ?? "OTP Verification Failed";
+
+        EasyLoading.showError(errorMessage);
+
         if (kDebugMode) {
-          print("Error occurred: ${body['message']}");
+          print("Error occurred: $errorMessage");
         }
       }
     } catch (e) {
